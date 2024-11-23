@@ -1,0 +1,9 @@
+[submodule "external/googletest"]
+	path = external/googletest
+	url = https://github.com/google/googletest.git
+[submodule "external/rtaudio"]
+	path = external/rtaudio
+	url = https://github.com/thestk/rtaudio.git
+[submodule "external/libsndfile"]
+	path = external/libsndfile
+	url = https://github.com/libsndfile/libsndfile.git
