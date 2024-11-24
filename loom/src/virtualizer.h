@@ -10,14 +10,19 @@ namespace Loom
     public:
         Error RequestBuffer(Buffer*& buffer, const Node* /*source*/) override
         {
-            buffer = bufferPool.GetBuffer();
-            return OK;
+            return bufferPool.GetBuffer(buffer);
         }
 
-        void ReturnBuffer(Buffer*& buffer) override
+        Error ReturnBuffer(Buffer*& buffer) override
         {
-            bufferPool.ReturnBuffer(buffer);
+            Error error = bufferPool.ReturnBuffer(buffer);
             buffer = nullptr;
+            return error;
+        }
+
+        Error GetFormat(Format& format) const
+        {
+            return bufferPool.GetFormat(format);
         }
 
         BufferPool bufferPool;

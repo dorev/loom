@@ -5,17 +5,17 @@ namespace Loom
     class Format
     {
     public:
-        Format(unsigned channelCount, unsigned samplingRate)
+        Format(unsigned channelCount = 0, unsigned samplingRate = 0)
             : channelCount(channelCount)
-            , samplingRate(samplingRate)
+            , frequency(samplingRate)
         {}
 
         unsigned channelCount;
-        unsigned samplingRate;
+        unsigned frequency;
 
         bool operator==(const Format& other) const
         {
-            return channelCount == other.channelCount && samplingRate == other.samplingRate;
+            return channelCount == other.channelCount && frequency == other.frequency;
         }
     };
 }

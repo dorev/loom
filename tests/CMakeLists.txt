@@ -18,11 +18,13 @@ set(GTEST_ROOT ${EXTERNAL_DIR}/googletest)
 
 target_include_directories(
     ${PROJECT_NAME}
-    PRIVATE ..
-    PRIVATE ${GTEST_ROOT}/googletest
-    PRIVATE ${GTEST_ROOT}/googletest/include
-    PRIVATE ${GTEST_ROOT}/googlemock
-    PRIVATE ${GTEST_ROOT}/googlemock/include
+    PRIVATE
+    ${GTEST_ROOT}/googletest
+    ${GTEST_ROOT}/googletest/include
+    ${GTEST_ROOT}/googlemock
+    ${GTEST_ROOT}/googlemock/include
+    ${CMAKE_SOURCE_DIR}/loom/src
+    ${EXTERNAL_DIR}
 )
 
 if(WIN32)
@@ -34,4 +36,3 @@ elseif(UNIX)
 endif()
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE ${RTAUDIO_API})
-

@@ -1,17 +1,19 @@
-#include <cmath>
-#include <vector>
-#include <queue>
-#include <memory>
-#include <algorithm>
+#include <chrono>
+#include <thread>
 
 #include "gtest/gtest.h"
-#include "external/rtaudio/RtAudio.h"
+#include "rtaudio/RtAudio.h"
 
-#include "loom/src/engine.h"
-#include "loom/src/ieffect_spatializer.h"
-#include "loom/src/idatanode_oscillators.h"
+#include "engine.h"
+#include "ieffect_spatializer.h"
+#include "idatanode_oscillators.h"
 
 using namespace Loom;
+
+void SleepMs(unsigned int milliseconds)
+{
+    std::this_thread::sleep_for(std::chrono::milliseconds(milliseconds));
+}
 
 int audioCallback(
     void* outputBuffer,
@@ -42,17 +44,17 @@ TEST(Loom, SmokeTest)
     Engine engine(10, 512, Format(2, 44100));
 
     Emitter* triangleEmitter = nullptr;
-    engine.CreateEmitter(triangleEmitter, Transform(-10));
+    ASSERT_EQ(engine.CreateEmitter(triangleEmitter, Transform(-10)), OK);
     triangleEmitter->AddEffect(new Spatializer());
 
     Emitter* sineEmitter = nullptr;
-    engine.CreateEmitter(sineEmitter, Transform(10));
+    ASSERT_EQ(engine.CreateEmitter(sineEmitter, Transform(10)), OK);
     sineEmitter->AddEffect(new Spatializer());
 
     Sound* triangleSound = nullptr;
     TriangleSource triangleSource(440, 1.0);
-    engine.CreateSound(triangleSound, &triangleSource, triangleEmitter);
-    triangleSound->play = true;
+    ASSERT_EQ(engine.CreateSound(triangleSound, &triangleSource, triangleEmitter), OK);
+    triangleSound->Play();
 
     RtAudio audio;
     if (audio.getDeviceCount() < 1)
@@ -70,25 +72,27 @@ TEST(Loom, SmokeTest)
 
     if (audio.startStream())
         FAIL();
-    
-    Sleep(1000);
+
+    SleepMs(1000);
 
     Sound* sineSound = nullptr;
     SineSource sineSource(660, 1.0);
-    engine.CreateSound(sineSound, &sineSource, sineEmitter);
-    sineSound->emitter = sineEmitter;
-    sineSound->play = true;
+    ASSERT_EQ(engine.CreateSound(sineSound, &sineSource, sineEmitter), OK);
 
-    Sleep(1000);
+    sineSound->Play();
 
-    triangleSound->play = false;
+    SleepMs(1000);
 
-    Sleep(1000);
+    triangleSound->Stop();
+
+    SleepMs(1000);
+
+    EXPECT_TRUE(sineSound->IsPlaying());
+    EXPECT_FALSE(triangleSound->IsPlaying());
 
     if (audio.stopStream())
         FAIL();
 
     if (audio.isStreamOpen())
         audio.closeStream();
-
 }

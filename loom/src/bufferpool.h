@@ -17,24 +17,52 @@ namespace Loom
                 buffers.push_back(new Buffer(frameCount, format));
         }
 
-        Buffer* GetBuffer()
+        Error GetBuffer(Buffer*& bufferRequest)
         {
             for (Buffer* buffer : buffers)
             {
                 if (buffer->TryAcquire())
-                    return buffer;
+                {
+                    bufferRequest = buffer;
+                    return OK;
+                }
             }
 
-            return nullptr;
+            bufferRequest = nullptr;
+            return OK;
         }
 
-        void ReturnBuffer(Buffer*& buffer)
+        Error ReturnBuffer(Buffer*& returnedBuffer)
         {
-            if (buffer)
+            if (!returnedBuffer)
+                return NullBuffer;
+
+            bool bufferFound = false;
+            for (const Buffer* buffer : buffers)
             {
-                buffer->Release();
-                buffer = nullptr;
+                if (buffer == returnedBuffer)
+                {
+                    bufferFound = true;
+                    break;
+                }
             }
+
+            if (!bufferFound)
+                return InvalidParameter;
+
+            returnedBuffer->Release();
+            returnedBuffer = nullptr;
+
+            return OK;
+        }
+
+        Error GetFormat(Format& format) const
+        {
+            if (buffers.empty())
+                return NullBuffer;
+
+            format = buffers[0]->format;
+            return OK;
         }
 
     private:

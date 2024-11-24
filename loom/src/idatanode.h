@@ -9,6 +9,21 @@ namespace Loom
     class IDataNode
     {
     public:
-        virtual Error Read(Buffer* buffer, unsigned bufferFrameOffset, unsigned seekFramePosition, unsigned frameCount, unsigned& framesRead) = 0;
+        virtual Error Read(Buffer* buffer, unsigned bufferFrameOffset, unsigned framePosition, unsigned frameCount, unsigned& framesRead) = 0;
+
+        virtual Error GetFormat(Format& /*format*/)
+        {
+            return NotSupported;
+        }
+
+        virtual Error GetDuration(float& /*seconds*/)
+        {
+            return NotSupported;
+        }
+
+        virtual Error GetFrameCount(unsigned& /*frameCount*/)
+        {
+            return NotSupported;
+        }
     };
 }

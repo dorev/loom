@@ -29,7 +29,7 @@ namespace Loom
                 for (unsigned channel = 0; channel < format.channelCount; ++channel)
                     buffer->data[(i + bufferFrameOffset) * format.channelCount + channel] = sample;
 
-                phase += 2.0f * Pi * frequency / format.samplingRate;
+                phase += 2.0f * Pi * frequency / format.frequency;
 
                 if (phase >= 2.0f * Pi)
                     phase -= 2.0f * Pi;
@@ -64,7 +64,7 @@ namespace Loom
         {
             Format format = buffer->format;
 
-            float frameAmplitudeStep = amplitude * 2.0f * frequency / format.samplingRate;
+            float frameAmplitudeStep = amplitude * 2.0f * frequency / format.frequency;
 
             for (unsigned i = 0; i < frameCount; ++i)
             {

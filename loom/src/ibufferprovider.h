@@ -9,6 +9,7 @@ namespace Loom
     {
     public:
         virtual Error RequestBuffer(Buffer*& buffer, const Node* source) = 0;
-        virtual void ReturnBuffer(Buffer*& buffer) = 0;
+        virtual Error ReturnBuffer(Buffer*& buffer) = 0;
+        virtual Error GetFormat(Format&) const = 0;
     };
 }

@@ -9,12 +9,15 @@ namespace Loom
         OK = 0,
         Failed,
         NullBuffer,
+        BufferTooSmall,
         NullDestination,
         NullSource,
-        FormatMismatch,
         NullEffect,
+        UnsupportedFormat,
         InvalidParameter,
+        InvalidSeek,
         EndOfFile,
-        BufferTooSmall
+        NotSupported,
+        Invalid = unsigned(-1),
     };
 }
