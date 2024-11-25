@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-#include "ieffect.h"
+#include "effect.h"
 #include "node.h"
 #include "emitter.h"
 #include "sound.h"
@@ -10,12 +10,18 @@
 namespace Loom
 {
     // Thank you ChatGPT!
-    class Spatializer : public IEffect
+    class Spatializer : public Effect
     {
     public:
         Spatializer(float maxDistance = 100)
-            : maxDistance(maxDistance)
+            : Effect("Spatializer")
+            , maxDistance(maxDistance)
         {
+        }
+
+        EffectType Type() const override
+        {
+            return EffectType::Spatial;
         }
 
         Error Process(Buffer* buffer, unsigned frameCount, Node* source) override
@@ -23,8 +29,11 @@ namespace Loom
             if (!buffer)
                 return NullBuffer;
 
+            if (!bypass.load())
+                return OK;
+
             if (buffer->format.channelCount != 1 && buffer->format.channelCount != 2)
-                return UnsupportedFormat; // Only mono and stereo are supported
+                return UnsupportedFormat;
 
             Emitter* emitter = nullptr;
             Listener* listener = nullptr;

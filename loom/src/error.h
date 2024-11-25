@@ -14,6 +14,8 @@ namespace Loom
         NullSource,
         NullEffect,
         UnsupportedFormat,
+        FormatMismatch,
+        OutOfBound,
         InvalidParameter,
         InvalidSeek,
         EndOfFile,

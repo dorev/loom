@@ -17,5 +17,10 @@ namespace Loom
         {
             return channelCount == other.channelCount && frequency == other.frequency;
         }
+        
+        bool operator!=(const Format& other) const
+        {
+            return !operator==(other);
+        }
     };
 }

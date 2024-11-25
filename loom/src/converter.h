@@ -45,6 +45,9 @@ namespace Loom
         };
         static Error MonoToStereo(const Buffer* source, Buffer* destination, unsigned frameCount);
         static Error StereoToMono(const Buffer* source, Buffer* destination, unsigned frameCount);
+
+        // TODO:
+        // Resampling algorithms do not update buffer sizes when resampling!!!
         static Error Resample(Buffer* source, Buffer* destination, unsigned frameCount);
 
     private:

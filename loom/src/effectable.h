@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include "ieffect.h"
+#include "effect.h"
 #include "buffer.h"
 
 namespace Loom
@@ -10,7 +10,7 @@ namespace Loom
     class Effectable
     {
     public:
-        Error AddEffect(IEffect* effect)
+        Error AddEffect(Effect* effect)
         {
             if (!effect)
                 return NullEffect;
@@ -22,7 +22,7 @@ namespace Loom
 
         Error ApplyEffects(Buffer* buffer, unsigned frameCount, Node* source)
         {
-            for (IEffect* effect : effects)
+            for (Effect* effect : effects)
             {
                 Error error = effect->Process(buffer, frameCount, source);
                 if (error)
@@ -32,6 +32,6 @@ namespace Loom
             return OK;
         }
 
-        std::vector<IEffect*> effects;
+        std::vector<Effect*> effects;
     };
 }

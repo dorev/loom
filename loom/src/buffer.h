@@ -16,6 +16,7 @@ namespace Loom
         void Reset(unsigned frameCount);
         bool CanContainXFrames(unsigned frameCount) const;
         unsigned FrameCapacity() const;
+        Error FrameOffset(unsigned frameOffset, float*& pointer);
         Error MergeInto(Buffer* other, unsigned frameCount);
         Error ConvertAndMergeInto(Buffer* other, unsigned frameCount);
         bool TryAcquire();

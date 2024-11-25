@@ -14,7 +14,13 @@ add_library(
 target_include_directories(
     ${PROJECT_NAME}
     PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/external
+    ${EXTERNAL_DIR}/external
+    ${EXTERNAL_DIR}/libsndfile/include
+)
+
+target_link_libraries(${PROJECT_NAME}
+    PRIVATE
+    sndfile
 )
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")

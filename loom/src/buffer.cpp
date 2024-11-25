@@ -29,6 +29,15 @@ namespace Loom
         return static_cast<unsigned>(data.capacity()) / format.channelCount;
     }
 
+    Error Buffer::FrameOffset(unsigned frameOffset, float*& pointer)
+    {
+        if (frameOffset >= FrameCapacity())
+            return OutOfBound;
+
+        pointer = data.data() + frameOffset * format.channelCount;
+        return OK;
+    }
+
     Error Buffer::MergeInto(Buffer* other, unsigned frameCount)
     {
         if (!other)
